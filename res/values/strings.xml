@@ -3,5 +3,7 @@
 
     <string name="hello">Hello World, ColibriActivity!</string>
     <string name="app_name">Colibri</string>
-
+	<string name="NewEvent">NewEvent</string>
+	<string name="SetParameter">SetParameter</string>
+	<string name="Refresh">Refresh</string>
 </resources>
