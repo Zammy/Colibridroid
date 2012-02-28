@@ -25,7 +25,8 @@ public class ColibriActivity extends TabActivity {
         
         this.InitTabInterface();
         
-        this.FacebookLogin();
+        //this.FacebookLogin();
+        this.WebViewFacebookLogin();
     }
 
 	private void InitTabInterface() {
@@ -56,53 +57,60 @@ public class ColibriActivity extends TabActivity {
                       .setContent(intent);
         tabHost.addTab(spec);
 
-        tabHost.setCurrentTab(2);
+        tabHost.setCurrentTab(0);
 	}
 
-	private void FacebookLogin() {
-		mPrefs = getPreferences(MODE_PRIVATE);
-        String access_token = mPrefs.getString("access_token", null);
-        long expires = mPrefs.getLong("access_expires", 0);
-        if (access_token != null) {
-            facebook.setAccessToken(access_token);
-        }
-        if (expires != 0) {
-            facebook.setAccessExpires(expires);
-        }
-        
-        if(facebook.isSessionValid()) 
-        	return;
-
-        facebook.authorize(this, new String[] { "email", "publish_checkins" },  new DialogListener() {
-
-	        public void onComplete(Bundle values) {
-	            SharedPreferences.Editor editor = mPrefs.edit();
-	            editor.putString("access_token", facebook.getAccessToken());
-	            editor.putLong("access_expires", facebook.getAccessExpires());
-	            editor.commit();
-	        }
+//	private void FacebookLogin() {
+//		mPrefs = getPreferences(MODE_PRIVATE);
+//        String access_token = mPrefs.getString("access_token", null);
+//        long expires = mPrefs.getLong("access_expires", 0);
+//        if (access_token != null) {
+//            facebook.setAccessToken(access_token);
+//        }
+//        if (expires != 0) {
+//            facebook.setAccessExpires(expires);
+//        }
+//        
+//        if(facebook.isSessionValid()) 
+//        	return;
+//
+//        facebook.authorize(this, new String[] { "email", "user_events","create_event","rsvp_event","publish_stream","read_friendlists" }, new DialogListener() {
+//
+//	        public void onComplete(Bundle values) {
+//	            SharedPreferences.Editor editor = mPrefs.edit();
+//
+//	            editor.putString("access_token", facebook.getAccessToken());
+//	            editor.putLong("access_expires", facebook.getAccessExpires());
+//	            editor.commit();
+//	        }
+//	
+//	
+//	        public void onFacebookError(FacebookError error) {
+//	        	Log.d("Colibri", error.getLocalizedMessage());
+//	        }
+//	
+//	
+//	        public void onError(DialogError e) {
+//	        	
+//	        }
+//	
+//	
+//	        public void onCancel() {
+//	        	
+//	        }
+//        });
+//	}
+//	
+//	@Override
+//	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//	    super.onActivityResult(requestCode, resultCode, data);
+//	
+//	    facebook.authorizeCallback(requestCode, resultCode, data);
+//	}
 	
-	
-	        public void onFacebookError(FacebookError error) {
-	        	Log.d("Colibri", error.getLocalizedMessage());
-	        }
-	
-	
-	        public void onError(DialogError e) {
-	        	
-	        }
-	
-	
-	        public void onCancel() {
-	        	
-	        }
-        });
-	}
-	
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-	    super.onActivityResult(requestCode, resultCode, data);
-	
-	    facebook.authorizeCallback(requestCode, resultCode, data);
+	private void WebViewFacebookLogin() {
+		Intent i = new Intent();
+		i.setClass(this, FacebookLoginActivity.class);
+		this.startActivity(i);
 	}
 }
