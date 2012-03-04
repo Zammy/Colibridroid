@@ -14,12 +14,16 @@ import com.facebook.android.Facebook.DialogListener;
 import com.facebook.android.FacebookError;
 
 public class ColibriActivity extends TabActivity {
+	public static ColibriActivity instance;
+	
    Facebook facebook = new Facebook("306736219374446");
    
    private SharedPreferences mPrefs;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
+    	instance = this;
+    	
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         
