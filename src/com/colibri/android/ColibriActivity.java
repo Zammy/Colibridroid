@@ -1,5 +1,7 @@
 package com.colibri.android;
 
+import org.json.JSONObject;
+
 import android.app.TabActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,10 +15,13 @@ import com.facebook.android.Facebook;
 import com.facebook.android.Facebook.DialogListener;
 import com.facebook.android.FacebookError;
 
+import com.colibri.android.Server.*;
+
 public class ColibriActivity extends TabActivity {
 	public static ColibriActivity instance;
 	
    Facebook facebook = new Facebook("306736219374446");
+   public String accessToken;
    
    private SharedPreferences mPrefs;
 	
@@ -29,8 +34,23 @@ public class ColibriActivity extends TabActivity {
         
         this.InitTabInterface();
         
-        //this.FacebookLogin();
-        this.WebViewFacebookLogin();
+        this.FacebookLogin();
+        
+//        Server.getFriends(new SendReceiverBase() {
+//
+//			@Override
+//			public void error(String error) {
+//				// TODO Auto-generated method stub
+//				
+//			}
+//
+//			@Override
+//			public void onReceive(JSONObject o) {
+//				// TODO Auto-generated method stub
+//				
+//			}
+//        	
+//        });
     }
 
 	private void InitTabInterface() {
@@ -64,57 +84,51 @@ public class ColibriActivity extends TabActivity {
         tabHost.setCurrentTab(0);
 	}
 
-//	private void FacebookLogin() {
-//		mPrefs = getPreferences(MODE_PRIVATE);
-//        String access_token = mPrefs.getString("access_token", null);
-//        long expires = mPrefs.getLong("access_expires", 0);
-//        if (access_token != null) {
-//            facebook.setAccessToken(access_token);
-//        }
-//        if (expires != 0) {
-//            facebook.setAccessExpires(expires);
-//        }
-//        
-//        if(facebook.isSessionValid()) 
-//        	return;
-//
-//        facebook.authorize(this, new String[] { "email", "user_events","create_event","rsvp_event","publish_stream","read_friendlists" }, new DialogListener() {
-//
-//	        public void onComplete(Bundle values) {
-//	            SharedPreferences.Editor editor = mPrefs.edit();
-//
-//	            editor.putString("access_token", facebook.getAccessToken());
-//	            editor.putLong("access_expires", facebook.getAccessExpires());
-//	            editor.commit();
-//	        }
-//	
-//	
-//	        public void onFacebookError(FacebookError error) {
-//	        	Log.d("Colibri", error.getLocalizedMessage());
-//	        }
-//	
-//	
-//	        public void onError(DialogError e) {
-//	        	
-//	        }
-//	
-//	
-//	        public void onCancel() {
-//	        	
-//	        }
-//        });
-//	}
-//	
-//	@Override
-//	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//	    super.onActivityResult(requestCode, resultCode, data);
-//	
-//	    facebook.authorizeCallback(requestCode, resultCode, data);
-//	}
+	private void FacebookLogin() {
+		mPrefs = getPreferences(MODE_PRIVATE);
+        this.accessToken = mPrefs.getString("access_token", null);
+        long expires = mPrefs.getLong("access_expires", 0);
+        if (accessToken != null) {
+            facebook.setAccessToken(accessToken);
+        }
+        if (expires != 0) {
+            facebook.setAccessExpires(expires);
+        }
+        
+        if(facebook.isSessionValid()) 
+        	return;
+
+        facebook.authorize(this, new String[] { "email", "user_events","create_event","rsvp_event","publish_stream","read_friendlists" }, new DialogListener() {
+
+	        public void onComplete(Bundle values) {
+	            SharedPreferences.Editor editor = mPrefs.edit();
+
+	            editor.putString("access_token", facebook.getAccessToken());
+	            editor.putLong("access_expires", facebook.getAccessExpires());
+	            editor.commit();
+	        }
 	
-	private void WebViewFacebookLogin() {
-		Intent i = new Intent();
-		i.setClass(this, FacebookLoginActivity.class);
-		this.startActivity(i);
+	
+	        public void onFacebookError(FacebookError error) {
+	        	Log.d("Colibri", error.getLocalizedMessage());
+	        }
+	
+	
+	        public void onError(DialogError e) {
+	        	
+	        }
+	
+	
+	        public void onCancel() {
+	        	
+	        }
+        });
+	}
+	
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+	    super.onActivityResult(requestCode, resultCode, data);
+	
+	    facebook.authorizeCallback(requestCode, resultCode, data);
 	}
 }
