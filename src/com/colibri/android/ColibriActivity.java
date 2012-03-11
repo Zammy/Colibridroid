@@ -1,7 +1,5 @@
 package com.colibri.android;
 
-import org.json.JSONObject;
-
 import android.app.TabActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,8 +12,6 @@ import com.facebook.android.DialogError;
 import com.facebook.android.Facebook;
 import com.facebook.android.Facebook.DialogListener;
 import com.facebook.android.FacebookError;
-
-import com.colibri.android.Server.*;
 
 public class ColibriActivity extends TabActivity {
 	public static ColibriActivity instance;

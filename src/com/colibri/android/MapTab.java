@@ -6,11 +6,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Point;
-import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -19,17 +14,18 @@ import android.os.Bundle;
 import com.colibri.android.Server.Server;
 import com.colibri.android.data.ColibriEvent;
 import com.colibri.android.maps.EventOverlay;
+import com.colibri.android.maps.EventOverlayItem;
+import com.colibri.android.maps.IAmHereOverlay;
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
-import com.google.android.maps.OverlayItem;
 
 public class MapTab extends MapActivity {
 	private MapTab.GeoLocListener locationListener;
 	private MapView mapView;
-	private MapTab.TargetOverlay targetOverlay;
+	private IAmHereOverlay targetOverlay;
 	private EventOverlay eventOverlay;
 	
     public void onCreate(Bundle savedInstanceState) {
@@ -37,11 +33,8 @@ public class MapTab extends MapActivity {
         setContentView(R.layout.maptab);
         
         this.mapView = (MapView)this.findViewById(R.id.map);
-        this.targetOverlay = new TargetOverlay();
-		
-		Drawable eventDrawble = ColibriActivity.instance.getResources().getDrawable(R.drawable.icon_event);
-		//eventDrawble.setBounds(0, 0, eventDrawble.getIntrinsicWidth(), eventDrawble.getIntrinsicHeight());
-        this.eventOverlay = new EventOverlay(eventDrawble);
+        this.targetOverlay = new IAmHereOverlay();
+        this.eventOverlay = new EventOverlay();
 
         List<Overlay> listOfOverlays = this.mapView.getOverlays();
         listOfOverlays.add(targetOverlay);
@@ -59,11 +52,9 @@ public class MapTab extends MapActivity {
     private void populateEvents() {
 		ArrayList<ColibriEvent> events = Server.getEvents();
 		for(ColibriEvent event : events) {
-			GeoPoint p = new GeoPoint((int)(event.Latitude * 1E6),(int)(event.Longitude * 1E6));
-			this.eventOverlay.addOverlay(new OverlayItem(p,event.type.toString(),event.Description));
+			EventOverlayItem item = new EventOverlayItem(event);
+			this.eventOverlay.addEvent(item);
 		}
-		this.eventOverlay.refresh();
-		
 	}
 
  
@@ -87,31 +78,6 @@ public class MapTab extends MapActivity {
 	protected boolean isRouteDisplayed() {
 		// TODO Auto-generated method stub
 		return false;
-	}
-	
-	private class TargetOverlay extends com.google.android.maps.Overlay {
-		private GeoPoint location;
-		
-		public void setGeoLocation(GeoPoint l) {
-			this.location = l;
-		}
-		
-        @Override
-        public boolean draw(Canvas canvas, MapView mapView, boolean shadow, long when) {
-            super.draw(canvas, mapView, shadow);         
-            if (this.location == null)
-            	return false;
- 
-            //---translate the GeoPoint to screen pixels---
-            Point screenPts = new Point();
-            mapView.getProjection().toPixels(this.location, screenPts);
- 
-            //---add the marker---
-            Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.yrhere);    
-            int halfWidth = bmp.getWidth()/2;
-            canvas.drawBitmap(bmp, screenPts.x-halfWidth , screenPts.y-halfWidth , null);         
-            return true;
-        }
 	}
 	
 	private class GeoLocListener implements LocationListener {

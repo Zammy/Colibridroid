@@ -31,12 +31,14 @@ public class Server {
 		e.type = ColibriEvent.Type.Drinking;
 		events.add(e);
 		
+		e = new ColibriEvent();
 		e.Description = "Going out to movie!";
 		e.Latitude = 42.63445919;
 		e.Longitude = 23.38235196;
 		e.type = ColibriEvent.Type.Movie;
 		events.add(e);
 		
+		e = new ColibriEvent();
 		e.Description = "Going out to rock!";
 		e.Latitude = 42.63446919;
 		e.Longitude = 23.37245196;
