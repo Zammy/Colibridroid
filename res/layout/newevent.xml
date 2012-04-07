@@ -10,12 +10,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical" >
-        <EditText
+        
+       	<EditText
 			android:id="@+id/nameNewEvent"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:hint="@string/hint_NameOfEvent"
-            />
+			android:hint="@string/hint_NameOfEvent" />
         
         <EditText 
             android:id="@+id/descriptionNewEvent"
@@ -24,6 +24,21 @@
             android:singleLine="false" 
             android:lines="5"
             android:hint="@string/hint_DescriptionOfEvent" />
+        
+        <Button
+            android:id="@+id/buttonStartTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/button_StartTime" 
+            android:onClick="onButtonTimeClicked"/>
+        
+        <Button
+            android:id="@+id/buttonEndTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" 
+            android:text="@string/button_EndTime"
+            android:onClick="onButtonTimeClicked"/>
+        
     </LinearLayout>
 </ScrollView>
 

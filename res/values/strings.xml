@@ -11,4 +11,7 @@
 	<!-- Hints for  -->
 	<string name="hint_NameOfEvent">Event Name</string>
 	<string name="hint_DescriptionOfEvent">Description</string>
+	<string name="button_StartTime">Start Time</string>
+	<string name="button_EndTime">End Time</string>
+	
 </resources>
