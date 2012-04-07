@@ -14,4 +14,6 @@
 	<string name="button_StartTime">Start Time</string>
 	<string name="button_EndTime">End Time</string>
 	
+	<string name="makePrivate">Make Private?</string>
+	
 </resources>

@@ -1,5 +1,6 @@
 package com.colibri.android;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import android.app.Activity;
@@ -8,10 +9,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
+import android.widget.Spinner;
 
+import com.colibri.android.data.ColibriEvent;
 import com.ptashek.widgets.datetimepicker.DateTimePicker;
 
 public class NewEventActivity extends Activity {
@@ -20,6 +23,17 @@ public class NewEventActivity extends Activity {
 		setContentView(R.layout.newevent);
 		
 		this.findViewById(R.id.buttonStartTime);
+		
+		ColibriEvent.Type[] types = ColibriEvent.Type.values();
+		ArrayList<String> categories = new ArrayList<String>();
+		for (ColibriEvent.Type type : types) {
+			categories.add(type.toString());
+		}
+		
+		Spinner spinner = (Spinner) this.findViewById(R.id.categorySpinner);
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, categories);
+		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		spinner.setAdapter(adapter);
 	}
 	
 	public void onButtonTimeClicked(View sender) {
@@ -31,9 +45,6 @@ public class NewEventActivity extends Activity {
 		final RelativeLayout mDateTimeDialogView = (RelativeLayout) getLayoutInflater().inflate(R.layout.date_time_dialog, null);
 		final DateTimePicker mDateTimePicker = (DateTimePicker) mDateTimeDialogView.findViewById(R.id.DateTimePicker);
 		
-		// Check is system is set to use 24h time (this doesn't seem to work as expected though)
-//		final String timeS = android.provider.Settings.System.getString(getContentResolver(), android.provider.Settings.System.TIME_12_24);
-		final boolean is24h = true;// !(timeS == null || timeS.equals("12"));
 		((Button) mDateTimeDialogView.findViewById(R.id.SetDateTime)).setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v) {
@@ -64,7 +75,7 @@ public class NewEventActivity extends Activity {
 		});
 		
 		// Setup TimePicker
-		mDateTimePicker.setIs24HourView(is24h);
+		mDateTimePicker.setIs24HourView(true);
 		// No title on the dialog window
 		mDateTimeDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		// Set the dialog content view
