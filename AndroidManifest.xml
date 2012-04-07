@@ -39,6 +39,10 @@
         
         <activity 
             android:name=".FacebookLoginActivity" />
+        
+         <activity 
+             android:label="@string/NewEventActivityLabel"
+            android:name=".NewEventActivity" />
 
     </application>
 

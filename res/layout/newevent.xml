@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scrollView1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true" >
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+        <EditText
+			android:id="@+id/nameNewEvent"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:hint="@string/hint_NameOfEvent"
+            />
+        
+        <EditText 
+            android:id="@+id/descriptionNewEvent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="false" 
+            android:lines="5"
+            android:hint="@string/hint_DescriptionOfEvent" />
+    </LinearLayout>
+</ScrollView>
+
