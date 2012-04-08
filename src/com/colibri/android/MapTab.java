@@ -16,6 +16,7 @@ import com.colibri.android.data.ColibriEvent;
 import com.colibri.android.maps.EventOverlay;
 import com.colibri.android.maps.EventOverlayItem;
 import com.colibri.android.maps.IAmHereOverlay;
+import com.colibri.android.maps.MapLocationDataHolder;
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
@@ -62,7 +63,7 @@ public class MapTab extends MapActivity {
  
 	public void setLocation(Location l) {
 		
-		ColibriActivity.currentLocation = l;
+		MapLocationDataHolder.currentLocation = l;
     	
     	double lat = l.getLatitude();
     	double lng = l.getLongitude();
@@ -73,7 +74,7 @@ public class MapTab extends MapActivity {
             (int) (lat * 1E6), 
             (int) (lng * 1E6));
         
-        ColibriActivity.currentGeoLocation = p;
+        MapLocationDataHolder.currentGeoLocation = p;
         
         controller.animateTo(p);
         

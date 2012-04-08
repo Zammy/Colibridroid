@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
 import com.colibri.android.data.ColibriEvent;
+import com.colibri.android.maps.MapLocationDataHolder;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
@@ -39,12 +40,18 @@ public class NewEventActivity extends MapActivity {
 		
 		MapView miniMap = (MapView) this.findViewById(R.id.minimap);
 		MapController controller = miniMap.getController();
-		controller.setCenter(ColibriActivity.currentGeoLocation);
-		controller.setZoom(17);
+		if (MapLocationDataHolder.currentGeoLocation != null) {
+			controller.setCenter(MapLocationDataHolder.currentGeoLocation);
+			controller.setZoom(17);
+		}
 	}
 	
 	public void onButtonTimeClicked(View sender) {
 		showDateTimeDialogForButton((Button) sender);
+	}
+	
+	public void onButtonCreateEventClicked(View sender) {
+		
 	}
 
 	private void showDateTimeDialogForButton(final Button button) {

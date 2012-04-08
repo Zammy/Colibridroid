@@ -8,12 +8,12 @@
 	<string name="Refresh">Refresh</string>
 	<string name="NewEventActivityLabel">New Event</string>
 	
-	<!-- Hints for  -->
+	<!-- New Event  -->
 	<string name="hint_NameOfEvent">Event Name</string>
 	<string name="hint_DescriptionOfEvent">Description</string>
 	<string name="button_StartTime">Start Time</string>
 	<string name="button_EndTime">End Time</string>
-	
 	<string name="makePrivate">Make Private?</string>
+	<string name="createEvent">Create Event</string>
 	
 </resources>

@@ -22,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:singleLine="false" 
-            android:lines="5"
+            android:lines="3"
             android:hint="@string/hint_DescriptionOfEvent" />
         
         <com.google.android.maps.MapView
@@ -64,6 +64,13 @@
 			    android:layout_width="fill_parent"/>/
             
         </LinearLayout>
+        
+        <Button 
+            android:id="@+id/createEventButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/createEvent"
+            android:onClick="onButtonCreateEventClicked"/>
         
     </LinearLayout>
 </ScrollView>

@@ -17,8 +17,6 @@ import com.google.android.maps.GeoPoint;
 
 public class ColibriActivity extends TabActivity {
 	public static ColibriActivity instance;
-	public static Location currentLocation;
-	public static GeoPoint currentGeoLocation;
 	
    Facebook facebook = new Facebook("306736219374446");
    public String accessToken;
