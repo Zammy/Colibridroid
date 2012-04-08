@@ -25,6 +25,14 @@
             android:lines="5"
             android:hint="@string/hint_DescriptionOfEvent" />
         
+        <com.google.android.maps.MapView
+	  	    android:id="@+id/minimap"
+	      	android:layout_width="match_parent"
+	      	android:layout_height="100dp"
+	      	android:clickable="false"
+	      	android:enabled="true"
+	      	android:apiKey="0RqdaxABfP8iBtPzNgoyoiqKdvZr8edQWtuM0yw"/>
+        
         <Button
             android:id="@+id/buttonStartTime"
             android:layout_width="match_parent"

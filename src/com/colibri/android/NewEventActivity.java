@@ -3,7 +3,6 @@ package com.colibri.android;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.view.View;
@@ -15,9 +14,12 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
 import com.colibri.android.data.ColibriEvent;
+import com.google.android.maps.MapActivity;
+import com.google.android.maps.MapController;
+import com.google.android.maps.MapView;
 import com.ptashek.widgets.datetimepicker.DateTimePicker;
 
-public class NewEventActivity extends Activity {
+public class NewEventActivity extends MapActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.newevent);
@@ -34,6 +36,11 @@ public class NewEventActivity extends Activity {
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, categories);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner.setAdapter(adapter);
+		
+		MapView miniMap = (MapView) this.findViewById(R.id.minimap);
+		MapController controller = miniMap.getController();
+		controller.setCenter(ColibriActivity.currentGeoLocation);
+		controller.setZoom(17);
 	}
 	
 	public void onButtonTimeClicked(View sender) {
@@ -82,5 +89,11 @@ public class NewEventActivity extends Activity {
 		mDateTimeDialog.setContentView(mDateTimeDialogView);
 		// Display the dialog
 		mDateTimeDialog.show();
+	}
+
+	@Override
+	protected boolean isRouteDisplayed() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

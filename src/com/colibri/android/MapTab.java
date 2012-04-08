@@ -61,6 +61,8 @@ public class MapTab extends MapActivity {
 
  
 	public void setLocation(Location l) {
+		
+		ColibriActivity.currentLocation = l;
     	
     	double lat = l.getLatitude();
     	double lng = l.getLongitude();
@@ -70,6 +72,8 @@ public class MapTab extends MapActivity {
         GeoPoint p = new GeoPoint(
             (int) (lat * 1E6), 
             (int) (lng * 1E6));
+        
+        ColibriActivity.currentGeoLocation = p;
         
         controller.animateTo(p);
         

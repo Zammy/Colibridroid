@@ -4,6 +4,7 @@ import android.app.TabActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TabHost;
@@ -12,9 +13,12 @@ import com.facebook.android.DialogError;
 import com.facebook.android.Facebook;
 import com.facebook.android.Facebook.DialogListener;
 import com.facebook.android.FacebookError;
+import com.google.android.maps.GeoPoint;
 
 public class ColibriActivity extends TabActivity {
 	public static ColibriActivity instance;
+	public static Location currentLocation;
+	public static GeoPoint currentGeoLocation;
 	
    Facebook facebook = new Facebook("306736219374446");
    public String accessToken;
