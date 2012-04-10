@@ -53,6 +53,10 @@ public class NewEventActivity extends MapActivity {
 	public void onButtonCreateEventClicked(View sender) {
 		
 	}
+	
+	public void onButtonSelectLocationClicked(View sender) {
+		
+	}
 
 	private void showDateTimeDialogForButton(final Button button) {
 		final Dialog mDateTimeDialog = new Dialog(this);
@@ -70,31 +74,22 @@ public class NewEventActivity extends MapActivity {
 			}
 		});
 
-		// Cancel the dialog when the "Cancel" button is clicked
 		((Button) mDateTimeDialogView.findViewById(R.id.CancelDialog)).setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				mDateTimeDialog.cancel();
 			}
 		});
 
-		// Reset Date and Time pickers when the "Reset" button is clicked
 		((Button) mDateTimeDialogView.findViewById(R.id.ResetDateTime)).setOnClickListener(new OnClickListener() {
-
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				mDateTimePicker.reset();
 			}
 		});
 		
-		// Setup TimePicker
 		mDateTimePicker.setIs24HourView(true);
-		// No title on the dialog window
 		mDateTimeDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-		// Set the dialog content view
 		mDateTimeDialog.setContentView(mDateTimeDialogView);
-		// Display the dialog
 		mDateTimeDialog.show();
 	}
 

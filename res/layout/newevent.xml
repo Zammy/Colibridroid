@@ -24,15 +24,23 @@
             android:singleLine="false" 
             android:lines="3"
             android:hint="@string/hint_DescriptionOfEvent" />
-        
-        <com.google.android.maps.MapView
-	  	    android:id="@+id/minimap"
-	      	android:layout_width="match_parent"
-	      	android:layout_height="100dp"
-	      	android:clickable="false"
-	      	android:enabled="true"
-	      	android:apiKey="0RqdaxABfP8iBtPzNgoyoiqKdvZr8edQWtuM0yw"/>
-        
+        <RelativeLayout
+            android:layout_width="match_parent"
+		    android:layout_height="100dp" >
+	        <com.google.android.maps.MapView
+	            android:layout_width="match_parent"
+		    	android:layout_height="match_parent"
+		  	    android:id="@+id/minimap"
+		      	android:clickable="false"
+		      	android:enabled="true"
+		      	android:apiKey="0RqdaxABfP8iBtPzNgoyoiqKdvZr8edQWtuM0yw"/>
+	        <Button
+	            android:layout_width="match_parent"
+		    	android:layout_height="match_parent"
+	            android:layout_centerInParent="true"
+	            android:background="@null"
+	            android:onClick="onButtonSelectLocationClicked" />
+        </RelativeLayout>
         <Button
             android:id="@+id/buttonStartTime"
             android:layout_width="match_parent"
