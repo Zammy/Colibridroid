@@ -40,9 +40,13 @@
         <activity 
             android:name=".FacebookLoginActivity" />
         
-         <activity 
-             android:label="@string/NewEventActivityLabel"
+        <activity 
+            android:label="@string/NewEventActivityLabel"
             android:name=".NewEventActivity" />
+         
+        <activity
+            android:label="@string/PointYourLocation"
+            android:name=".ChooseLocationActivity" />
 
     </application>
 

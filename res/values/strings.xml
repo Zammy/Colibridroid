@@ -16,4 +16,7 @@
 	<string name="makePrivate">Make Private?</string>
 	<string name="createEvent">Create Event</string>
 	
+	<string name="PointYourLocation">Choose location for event</string>
+	<string name="ChooseAddress">Choose address</string>
+	
 </resources>

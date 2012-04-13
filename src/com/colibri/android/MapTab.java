@@ -49,7 +49,7 @@ public class MapTab extends MapActivity {
 		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this.locationListener);
 		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this.locationListener);
 		
-		ButtonHandler.getInstance().addHandlers(this.findViewById(R.id.buttons));
+		MenuButtonHandler.getInstance().addHandlers(this.findViewById(R.id.buttons));
     }
     
     private void populateEvents() {

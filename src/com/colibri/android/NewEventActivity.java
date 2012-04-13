@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -51,11 +52,18 @@ public class NewEventActivity extends MapActivity {
 	}
 	
 	public void onButtonCreateEventClicked(View sender) {
-		
+
 	}
 	
 	public void onButtonSelectLocationClicked(View sender) {
-		
+		Intent i = new Intent(this,ChooseLocationActivity.class);
+		this.startActivityForResult(i, 0);
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// TODO Auto-generated method stub
+		super.onActivityResult(requestCode, resultCode, data);
 	}
 
 	private void showDateTimeDialogForButton(final Button button) {

@@ -5,12 +5,12 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
-public class ButtonHandler {
+public class MenuButtonHandler {
 	
-	private static ButtonHandler instance;
-	public static ButtonHandler getInstance() {
+	private static MenuButtonHandler instance;
+	public static MenuButtonHandler getInstance() {
 		if (instance == null) {
-			instance = new ButtonHandler();
+			instance = new MenuButtonHandler();
 		}	
 		return instance;
 	}

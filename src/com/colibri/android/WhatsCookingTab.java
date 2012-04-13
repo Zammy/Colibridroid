@@ -18,7 +18,8 @@ public class WhatsCookingTab extends Activity {
 		this.adapter = new EventAdapter(Server.getEvents());
 		GridView gridView = (GridView) this.findViewById(R.id.gridView);
 		gridView.setAdapter(this.adapter);
-
+		
+		MenuButtonHandler.getInstance().addHandlers(this.findViewById(R.id.buttons));
 	}
 
 }
