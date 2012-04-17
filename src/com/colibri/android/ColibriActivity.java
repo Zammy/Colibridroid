@@ -3,8 +3,9 @@ package com.colibri.android;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TabHost;
@@ -13,7 +14,6 @@ import com.facebook.android.DialogError;
 import com.facebook.android.Facebook;
 import com.facebook.android.Facebook.DialogListener;
 import com.facebook.android.FacebookError;
-import com.google.android.maps.GeoPoint;
 
 public class ColibriActivity extends TabActivity {
 	public static ColibriActivity instance;
@@ -128,5 +128,11 @@ public class ColibriActivity extends TabActivity {
 	    super.onActivityResult(requestCode, resultCode, data);
 	
 	    facebook.authorizeCallback(requestCode, resultCode, data);
+	}
+	
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+	    super.onConfigurationChanged(newConfig);
+	    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 	}
 }

@@ -5,6 +5,8 @@ import java.util.Calendar;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -22,6 +24,9 @@ import com.google.android.maps.MapView;
 import com.ptashek.widgets.datetimepicker.DateTimePicker;
 
 public class NewEventActivity extends MapActivity {
+	private double longitude;
+	private double latitude;
+	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.newevent);
@@ -60,10 +65,21 @@ public class NewEventActivity extends MapActivity {
 		this.startActivityForResult(i, 0);
 	}
 	
+	
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+	    super.onConfigurationChanged(newConfig);
+	    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+	}
+	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// TODO Auto-generated method stub
 		super.onActivityResult(requestCode, resultCode, data);
+		
+		//here we get longitude and latitude data
+		this.latitude = data.getExtras().getDouble("latitude"); 
+		this.longitude = data.getExtras().getDouble("longitude");
 	}
 
 	private void showDateTimeDialogForButton(final Button button) {
@@ -106,4 +122,5 @@ public class NewEventActivity extends MapActivity {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
 }

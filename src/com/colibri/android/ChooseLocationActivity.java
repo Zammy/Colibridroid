@@ -1,5 +1,8 @@
 package com.colibri.android;
 
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.os.Bundle;
 
 import com.colibri.android.maps.ChooseLocationOverlay;
@@ -11,6 +14,8 @@ import com.google.android.maps.MapView;
 
 public class ChooseLocationActivity extends MapActivity {
 	
+	ChooseLocationOverlay overlay;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,7 +24,8 @@ public class ChooseLocationActivity extends MapActivity {
         MapView mapView = (MapView) this.findViewById(R.id.map);
         mapView.setBuiltInZoomControls(true);
         
-        mapView.getOverlays().add(new ChooseLocationOverlay(this));
+        this.overlay = new ChooseLocationOverlay(this);
+        mapView.getOverlays().add(this.overlay);
         
         GeoPoint p = MapLocationDataHolder.currentGeoLocation;
         if (p != null) {
@@ -28,11 +34,24 @@ public class ChooseLocationActivity extends MapActivity {
         	mapController.setZoom(17);
         }
 	}
+	
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+	    super.onConfigurationChanged(newConfig);
+	    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+	}
+	
+	public void LocationSelected() {
+		Intent intent = this.getIntent();
+		intent.putExtra("longitude", this.overlay.getLongitude());
+		intent.putExtra("latitude", this.overlay.getLatitude());
+		this.setResult(RESULT_OK, intent);
+		this.finish();
+	}
 
 	@Override
 	protected boolean isRouteDisplayed() {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
 }
