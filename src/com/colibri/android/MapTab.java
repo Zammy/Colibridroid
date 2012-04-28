@@ -11,7 +11,6 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 
-import com.colibri.android.Server.Server;
 import com.colibri.android.data.ColibriEvent;
 import com.colibri.android.maps.EventOverlay;
 import com.colibri.android.maps.EventOverlayItem;
@@ -50,10 +49,13 @@ public class MapTab extends MapActivity {
 		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this.locationListener);
 		
 		MenuButtonHandler.getInstance().addHandlers(this.findViewById(R.id.buttons));
+		
+
     }
     
     private void populateEvents() {
-		ArrayList<ColibriEvent> events = Server.getEvents();
+
+		ArrayList<ColibriEvent> events = ColibriEvent.events;
 		for(ColibriEvent event : events) {
 			EventOverlayItem item = new EventOverlayItem(event);
 			this.eventOverlay.addEvent(item);

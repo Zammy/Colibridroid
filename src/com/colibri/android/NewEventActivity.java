@@ -29,7 +29,7 @@ public class NewEventActivity extends MapActivity {
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.newevent);
+		setContentView(R.layout.neweventactivity);
 		
 		this.findViewById(R.id.buttonStartTime);
 		

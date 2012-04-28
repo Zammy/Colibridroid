@@ -51,6 +51,11 @@
             android:label="@string/PointYourLocation"
             android:name=".ChooseLocationActivity"
             android:configChanges="keyboardHidden|orientation" />
+        
+        <activity
+            android:name=".ViewEventActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:theme="@android:style/Theme.NoTitleBar" />
 
     </application>
 

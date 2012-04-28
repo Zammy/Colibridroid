@@ -2,11 +2,13 @@ package com.colibri.android.maps;
 
 import java.util.ArrayList;
 
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Point;
-import android.widget.Toast;
 
 import com.colibri.android.ColibriActivity;
+import com.colibri.android.ViewEventActivity;
+import com.colibri.android.data.ColibriEvent;
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapView;
 
@@ -40,7 +42,11 @@ public class EventOverlay extends com.google.android.maps.Overlay {
     	mapView.getProjection().toPixels(p, tapLocation);
         for(EventOverlayItem e : events) {
         	if (e.hitTest(tapLocation)) {
-        		 Toast.makeText(ColibriActivity.instance, e.event.Description , Toast.LENGTH_SHORT).show();
+        		
+        		Intent i = new Intent(ColibriActivity.instance,ViewEventActivity.class);
+        		i.putExtra("event", ColibriEvent.events.indexOf(e.event));
+        		ColibriActivity.instance.startActivity(i);
+        		
         	}
         }
     	return super.onTap(p, mapView);
