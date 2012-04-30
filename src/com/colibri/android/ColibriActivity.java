@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.TabHost;
 
+import com.colibri.android.Server.EventsReceiver;
+import com.colibri.android.Server.Server;
 import com.facebook.android.DialogError;
 import com.facebook.android.Facebook;
 import com.facebook.android.Facebook.DialogListener;
@@ -33,22 +35,6 @@ public class ColibriActivity extends TabActivity {
         this.InitTabInterface();
         
         this.FacebookLogin();
-        
-//        Server.getFriends(new SendReceiverBase() {
-//
-//			@Override
-//			public void error(String error) {
-//				// TODO Auto-generated method stub
-//				
-//			}
-//
-//			@Override
-//			public void onReceive(JSONObject o) {
-//				// TODO Auto-generated method stub
-//				
-//			}
-//        	
-//        });
     }
 
 	private void InitTabInterface() {
@@ -93,17 +79,22 @@ public class ColibriActivity extends TabActivity {
             facebook.setAccessExpires(expires);
         }
         
-        if(facebook.isSessionValid()) 
+        if(facebook.isSessionValid()) {
+            Server.getEvents(accessToken, new EventsReceiver());
         	return;
+        }
 
         facebook.authorize(this, new String[] { "email", "user_events","create_event","rsvp_event","publish_stream","read_friendlists" }, new DialogListener() {
 
 	        public void onComplete(Bundle values) {
 	            SharedPreferences.Editor editor = mPrefs.edit();
 
-	            editor.putString("access_token", facebook.getAccessToken());
+	            String access_token = facebook.getAccessToken();
+	            editor.putString("access_token", access_token);
 	            editor.putLong("access_expires", facebook.getAccessExpires());
 	            editor.commit();
+	            
+	            Server.getEvents(access_token, new EventsReceiver());
 	        }
 	
 	
@@ -115,7 +106,6 @@ public class ColibriActivity extends TabActivity {
 	        public void onError(DialogError e) {
 	        	
 	        }
-	
 	
 	        public void onCancel() {
 	        	

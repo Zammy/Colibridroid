@@ -6,9 +6,9 @@ import org.json.JSONObject;
 public abstract class SendReceiverBase {
 	
 	public void parse(String result) {
-		String newResult = result.substring(3);
+		//String newResult = result.substring(3);
 		try {
-			JSONObject o = new JSONObject(newResult);
+			JSONObject o = new JSONObject(result);
 			this.onReceive(o);
 		} catch (JSONException e) {
 			e.printStackTrace();

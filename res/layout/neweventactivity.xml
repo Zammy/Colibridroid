@@ -43,6 +43,7 @@
         </RelativeLayout>
         <Button
             android:id="@+id/buttonStartTime"
+            android:tag="startTime"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/button_StartTime" 
@@ -50,6 +51,7 @@
         
         <Button
             android:id="@+id/buttonEndTime"
+            android:tag="endTime"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" 
             android:text="@string/button_EndTime"

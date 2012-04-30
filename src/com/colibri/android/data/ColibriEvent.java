@@ -25,6 +25,10 @@ public class ColibriEvent {
 	
 	public static ArrayList<ColibriEvent> events;
 	
+	public static void AddNewEvent(ColibriEvent event) {
+		
+	}
+	
 	static {
 		
 		Log.i("A", "STATIC");

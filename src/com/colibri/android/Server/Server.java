@@ -21,7 +21,7 @@ import com.colibri.android.ColibriActivity;
 
 public class Server {
 	
-	private static final String serviceUrl = "http://nastop.com/colibri/fbAllFriends.php";
+	private static final String serviceUrl = "http://nastop.com/colibri/getEvents.php";
 //	private static String android_id;
 	
 //	public static void getUDID(ContentResolver resolver) {
@@ -29,20 +29,27 @@ public class Server {
 //			android_id = Secure.getString(resolver,Secure.ANDROID_ID);
 //	}
 	
-	public static void getFriends(SendReceiverBase receiver) {
+	public static void getEvents(String access_token, EventsReceiver receiver) {
 		HashMap<String,String> params = new HashMap<String,String>();
-//		params.put("registrationID", registrationID);
+		params.put("access_token", access_token);
 		String payload = jsonify(params);
-		
-		send(payload,receiver);
+		send(payload, receiver);
 	}
+	
+//	public static void getFriends(SendReceiverBase receiver) {
+//		HashMap<String,String> params = new HashMap<String,String>();
+////		params.put("registrationID", registrationID);
+//		String payload = jsonify(params);
+//		
+//		send(payload,receiver);
+//	}
 	
 	private static String jsonify(HashMap<String,String> params) {
 		JSONObject o = new JSONObject(params);
 		return o.toString();
 	}
 
-	private static void send(final String payload,final SendReceiverBase sendReceiver) {
+	private static void send(final String payload,final ISendReceiver sendReceiver) {
 		Thread t = new Thread(new Runnable() {
 			public void run() {
 				HttpClient client = new DefaultHttpClient();
@@ -54,9 +61,7 @@ public class Server {
 					HttpResponse response = client.execute(post);
 					BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent(),Charset.forName("UTF-8")));
 					String received = rd.readLine();
-					//sendReceiver.parse(received);		
-					int x = 1;
-					x++;
+					sendReceiver.parse(received);		
 					
 				} catch (IOException e) {
 					e.printStackTrace();

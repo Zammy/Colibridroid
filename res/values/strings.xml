@@ -20,4 +20,7 @@
 	<string name="ChooseAddress">Choose address</string>
 	<string name="StartTime">Start time</string>
 	<string name="EndTime">End time</string>
+	
+	<string name="Error">Error</string>
+	<string name="OK">OK</string>
 </resources>
