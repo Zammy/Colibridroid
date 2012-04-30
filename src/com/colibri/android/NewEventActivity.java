@@ -15,6 +15,7 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
@@ -28,9 +29,7 @@ import com.ptashek.widgets.datetimepicker.DateTimePicker;
 
 public class NewEventActivity extends MapActivity {
 	
-	@SuppressWarnings("unused")
 	private double longitude;
-	@SuppressWarnings("unused")
 	private double latitude;
 	
 	private Calendar startTime;
@@ -88,7 +87,19 @@ public class NewEventActivity extends MapActivity {
 	}
 	
 	public void onButtonCreateEventClicked(View sender) {
+		ColibriEvent newEvent = new ColibriEvent();
 		
+		EditText textField = (EditText)this.findViewById(R.id.nameNewEvent);
+		newEvent.Name = textField.toString();
+		textField = (EditText)this.findViewById(R.id.descriptionNewEvent);
+		newEvent.Description = textField.toString();
+		newEvent.Longitude = this.longitude;
+		newEvent.Latitude = this.latitude;
+		newEvent.startTime = this.startTime;
+		newEvent.endTime = this.endTime;
+		
+		ColibriEvent.addNewEvent(newEvent);
+
 	}
 	
 	public void onButtonSelectLocationClicked(View sender) {

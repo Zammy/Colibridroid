@@ -3,8 +3,11 @@ package com.colibri.android.data;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Calendar;
 
-import android.util.Log;
+import com.colibri.android.ColibriActivity;
+import com.colibri.android.Server.NewEventReceiver;
+import com.colibri.android.Server.Server;
 
 
 public class ColibriEvent {
@@ -15,6 +18,8 @@ public class ColibriEvent {
 	public ColibriEvent.Type type;
 	public URL ImageUrl;
 	public URL ThumbImageUrl;
+	public Calendar startTime;
+	public Calendar endTime;
 	
 	public enum Type {
 		Drinking,
@@ -25,14 +30,32 @@ public class ColibriEvent {
 	
 	public static ArrayList<ColibriEvent> events;
 	
-	public static void AddNewEvent(ColibriEvent event) {
+	public static void addNewEvent(ColibriEvent event) {
+		events.add(event);
 		
+		Server.newEvent(ColibriActivity.instance.accessToken, event, new NewEventReceiver());
+	}
+	
+	public String startTimeAsString() {
+		//[16:47:37] Mike Chernev: YYYY-MM-DD HH:MM:SS
+		return String.format("%04d-%02d-%02d %02d:%02d:00", 
+				this.startTime.get(Calendar.YEAR), 
+				this.startTime.get(Calendar.MONTH), 
+				this.startTime.get(Calendar.DAY_OF_MONTH),
+				this.startTime.get(Calendar.HOUR_OF_DAY),
+				this.startTime.get(Calendar.MINUTE));
+	}
+	
+	public String endTimeAsString() {
+		return String.format("%04d-%02d-%02d %02d:%02d:00", 
+				this.endTime.get(Calendar.YEAR), 
+				this.endTime.get(Calendar.MONTH), 
+				this.endTime.get(Calendar.DAY_OF_MONTH),
+				this.endTime.get(Calendar.HOUR_OF_DAY),
+				this.endTime.get(Calendar.MINUTE));
 	}
 	
 	static {
-		
-		Log.i("A", "STATIC");
-		
 		ColibriEvent.events = new ArrayList<ColibriEvent>();
 		
 		ColibriEvent e = new ColibriEvent();

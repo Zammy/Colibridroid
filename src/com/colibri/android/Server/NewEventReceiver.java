@@ -1,14 +1,34 @@
 package com.colibri.android.Server;
 
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
+
+import com.colibri.android.ColibriActivity;
+import com.colibri.android.R;
+import com.colibri.util.AlertDialogHelper;
+
 public class NewEventReceiver implements ISendReceiver {
 
 	public void parse(String result) {
-		// TODO Auto-generated method stub
-		
+		if (result.equalsIgnoreCase("event created")) {
+			AlertDialogHelper.ShowDialog(ColibriActivity.instance, R.string.Success, R.string.SuccessfulEventCreat, R.string.OK, new OnClickListener(){
+
+				public void onClick(DialogInterface dialog, int which) {
+					
+				}
+				
+			});
+		}
 	}
 
 	public void error(String error) {
-		// TODO Auto-generated method stub
+		AlertDialogHelper.ShowDialog(ColibriActivity.instance, R.string.Error, error , R.string.OK, new OnClickListener(){
+
+			public void onClick(DialogInterface dialog, int which) {
+				
+			}
+			
+		});
 		
 	}
 

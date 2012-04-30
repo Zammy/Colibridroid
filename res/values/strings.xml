@@ -23,4 +23,6 @@
 	
 	<string name="Error">Error</string>
 	<string name="OK">OK</string>
+	<string name="Success">Success</string>
+	<string name="SuccessfulEventCreat">Event was created successfully.</string>
 </resources>
