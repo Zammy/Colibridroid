@@ -28,7 +28,7 @@ public class EventOverlayItem {
 	}
 	
 	public GeoPoint getLocation() {
-		return new GeoPoint((int)(event.Latitude * 1E6),(int)(event.Longitude * 1E6));
+		return new GeoPoint((int)(event.latitude * 1E6),(int)(event.longitude * 1E6));
 	}
 
 	public Bitmap getMarker() {  

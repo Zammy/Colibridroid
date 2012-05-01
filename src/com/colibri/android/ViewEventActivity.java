@@ -25,10 +25,10 @@ public class ViewEventActivity extends MapActivity {
 		ColibriEvent event = ColibriEvent.events.get(indexOfEvent);
 		
 		TextView textView = (TextView) this.findViewById(R.id.nameEvent);
-		textView.setText(event.Name);
+		textView.setText(event.name);
 		
 		textView = (TextView) this.findViewById(R.id.eventDescription);
-		textView.setText(event.Description);
+		textView.setText(event.description);
 		
 		MapView miniMap = (MapView) this.findViewById(R.id.eventLocationMap);
 		MapController controller = miniMap.getController();

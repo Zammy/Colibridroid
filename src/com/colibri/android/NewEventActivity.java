@@ -92,6 +92,18 @@ public class NewEventActivity extends MapActivity {
 		
 	}
 	
+	private void setTimeOnDateTimePicker(Calendar cal, DateTimePicker dateTimePicker) {
+		
+		int years = cal.get(Calendar.YEAR);
+		int months = cal.get(Calendar.MONTH);
+		int days = cal.get(Calendar.DAY_OF_MONTH);
+		int hours =  cal.get(Calendar.HOUR_OF_DAY);
+		int minutes = cal.get(Calendar.MINUTE);
+
+		dateTimePicker.updateDate(years, months, days);
+		dateTimePicker.updateTime(hours, minutes);
+	}
+	
 	public void onButtonTimeClicked(View sender) {
 		showDateTimeDialogForButton((Button) sender);
 	}
@@ -100,11 +112,11 @@ public class NewEventActivity extends MapActivity {
 		ColibriEvent newEvent = new ColibriEvent();
 		
 		EditText textField = (EditText)this.findViewById(R.id.nameNewEvent);
-		newEvent.Name = textField.getText().toString();
+		newEvent.name = textField.getText().toString();
 		textField = (EditText)this.findViewById(R.id.descriptionNewEvent);
-		newEvent.Description = textField.getText().toString();
-		newEvent.Longitude = this.longitude;
-		newEvent.Latitude = this.latitude;
+		newEvent.description = textField.getText().toString();
+		newEvent.longitude = this.longitude;
+		newEvent.latitude = this.latitude;
 		newEvent.startTime = this.startTime;
 		newEvent.endTime = this.endTime;
 		
@@ -129,7 +141,6 @@ public class NewEventActivity extends MapActivity {
 	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		// TODO Auto-generated method stub
 		super.onActivityResult(requestCode, resultCode, data);
 		
 		//here we get longitude and latitude data
@@ -139,7 +150,6 @@ public class NewEventActivity extends MapActivity {
 	
 	private String constructTimeString(int years, int months, int days, int hours, int minutes) {
 		return String.format("%04d/%02d/%02d %02d:%02d", years,months+1,days,hours,minutes);
-		//return years + "/" + ( months+1 ) + "/" + days + " " + hours + ":" + minutes;
 	}
 
 	private void showDateTimeDialogForButton(final Button button) {
@@ -148,6 +158,12 @@ public class NewEventActivity extends MapActivity {
 		final Dialog mDateTimeDialog = new Dialog(this);
 		final RelativeLayout mDateTimeDialogView = (RelativeLayout) getLayoutInflater().inflate(R.layout.date_time_dialog, null);
 		final DateTimePicker mDateTimePicker = (DateTimePicker) mDateTimeDialogView.findViewById(R.id.DateTimePicker);
+	
+		if (buttonTag.equalsIgnoreCase("startTime")) {
+			this.setTimeOnDateTimePicker(this.startTime, mDateTimePicker);
+		} else {
+			this.setTimeOnDateTimePicker(this.endTime, mDateTimePicker);
+		}
 		
 		((Button) mDateTimeDialogView.findViewById(R.id.SetDateTime)).setOnClickListener(new OnClickListener() {
 
@@ -176,6 +192,14 @@ public class NewEventActivity extends MapActivity {
 				} else {
 					if (cal.before(NewEventActivity.this.startTime)) {
 						AlertDialogHelper.ShowDialog(NewEventActivity.this, R.string.Error, "End time cannot be befer begin time.", R.string.OK	, new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int which) {}
+						});
+						return;
+					}
+					Calendar fourMonthsAfterBeginTime = (Calendar) NewEventActivity.this.startTime.clone();
+					fourMonthsAfterBeginTime.add(Calendar.MONTH, 4);
+					if (cal.after(fourMonthsAfterBeginTime)) {
+						AlertDialogHelper.ShowDialog(NewEventActivity.this, R.string.Error, "End time cannot be four months after begin time.", R.string.OK	, new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int which) {}
 						});
 						return;

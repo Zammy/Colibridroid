@@ -13,15 +13,13 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpParams;
 
 import com.colibri.android.data.ColibriEvent;
 
 public class Server {
 	
-	private static final String getEventsUrl = "http://nastop.com/colibri/getEvents.php";
-	private static final String createEventUrl = "http://nastop.com/colibri/createEvent.php";
+	private static final String getEventsUrl = "http://www.nastop.com/colibri/getEvents.php";
+	private static final String createEventUrl = "http://www.nastop.com/colibri/createEvent.php";
 	
 //	private static String android_id;
 	
@@ -39,11 +37,11 @@ public class Server {
 	public static void newEvent(String access_token,ColibriEvent event, NewEventReceiver receiver) {
 		ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("access_token", access_token));
-		params.add(new BasicNameValuePair("name", event.Name));
-		params.add(new BasicNameValuePair("description", event.Description));
+		params.add(new BasicNameValuePair("name", event.name));
+		params.add(new BasicNameValuePair("description", event.description));
 		params.add(new BasicNameValuePair("location","Not implemented."));
-		params.add(new BasicNameValuePair("lon", Double.toString(event.Longitude)));
-		params.add(new BasicNameValuePair("lat", Double.toString(event.Latitude)));
+		params.add(new BasicNameValuePair("lon", Double.toString(event.longitude)));
+		params.add(new BasicNameValuePair("lat", Double.toString(event.latitude)));
 		params.add(new BasicNameValuePair("start_time", event.startTimeAsString()));
 		params.add(new BasicNameValuePair("end_time", event.endTimeAsString()));
 		if (event.isPrivate) 

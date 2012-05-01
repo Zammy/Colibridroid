@@ -54,9 +54,9 @@ public class EventAdapter extends BaseAdapter {
 
 	private void hookEventInformation(View eventImageView,ColibriEvent event) {
 		ImageView thumbImage = (ImageView) eventImageView.findViewById(R.id.eventImageThumb);
-		this.drawableManager.fetchDrawableOnThread(event.ThumbImageUrl.toString(), thumbImage);
+		this.drawableManager.fetchDrawableOnThread(event.thumbImageUrl.toString(), thumbImage);
 		
 		TextView description = (TextView)eventImageView.findViewById(R.id.eventDescription);
-		description.setText(event.Description);
+		description.setText(event.description);
 	}
 }

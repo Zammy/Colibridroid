@@ -31,15 +31,15 @@ public class EventsReceiver implements ISendReceiver {
 	}
 	
 	public void parse(String result) {
-		//String newResult = result.substring(3);
 		try {
 			JSONArray jsonEventsArray = new JSONArray(result);
 			for (int i = 0; i < jsonEventsArray.length(); i++) {
 				JSONObject jsonEvent = jsonEventsArray.getJSONObject(i);
 				ColibriEvent event = new ColibriEvent();
-				event.Description = jsonEvent.getString("description");
-				event.Longitude = Double.parseDouble(jsonEvent.getString("lon"));
-				event.Latitude = Double.parseDouble(jsonEvent.getString("lat"));
+				event.description = jsonEvent.getString("description");
+				event.longitude = Double.parseDouble(jsonEvent.getString("lon"));
+				event.latitude = Double.parseDouble(jsonEvent.getString("lat"));
+				event.fbPointer = jsonEvent.getString("fb_event_id");
 
 				String startTime = jsonEvent.getString("start_time");
 				String endTime = jsonEvent.getString("end_time");
@@ -56,18 +56,18 @@ public class EventsReceiver implements ISendReceiver {
 				} catch (ParseException e) {
 					e.printStackTrace();
 				}
-				
-				//TODO:remove
+
 				try {
-					event.ThumbImageUrl = new URL("http://dl.dropbox.com/u/4673216/Images/binge-drinking.jpg");
-					event.ImageUrl = new URL("http://1.bp.blogspot.com/-prXOLy31Hv4/TkuxKrAt5AI/AAAAAAAAFgc/6IEJGxKqkzM/s1600/binge-drinking.jpg");
+					event.thumbImageUrl = new URL(jsonEvent.getString("pic_thumb"));
+					event.imageUrl = new URL(jsonEvent.getString("pic"));
 				} catch (MalformedURLException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				
-				ColibriEvent.events.add(event);
+				boolean ownerIsMe = Boolean.parseBoolean(jsonEvent.getString("owner"));
+				event.isOwnedByMe = ownerIsMe;
 				
+				ColibriEvent.events.add(event);
 			}
 			
 			
