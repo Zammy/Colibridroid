@@ -1,5 +1,6 @@
 package com.colibri.android;
 
+import android.app.Activity;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,6 +19,9 @@ import com.facebook.android.Facebook.DialogListener;
 import com.facebook.android.FacebookError;
 
 public class ColibriActivity extends TabActivity {
+
+	public static Activity currentActivity;
+	
 	public static ColibriActivity instance;
 	
    Facebook facebook = new Facebook("306736219374446");

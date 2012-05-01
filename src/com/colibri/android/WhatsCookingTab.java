@@ -16,6 +16,8 @@ public class WhatsCookingTab extends Activity {
 	private EventAdapter adapter;
 	
   public void onCreate(Bundle savedInstanceState) {
+	  	ColibriActivity.currentActivity = this;
+	  
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.whatscooking);
 		
@@ -26,7 +28,7 @@ public class WhatsCookingTab extends Activity {
 
 			public void onItemClick(AdapterView<?> arg0, View view, int position, long id) {
 				
-        		Intent i = new Intent(ColibriActivity.instance,ViewEventActivity.class);
+        		Intent i = new Intent(ColibriActivity.currentActivity,ViewEventActivity.class);
         		i.putExtra("event", position);
         		ColibriActivity.instance.startActivity(i);
 			}

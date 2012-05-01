@@ -20,7 +20,7 @@ public class MenuButtonHandler {
 		newEventButton.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v) {
-				 Intent intent = new Intent().setClass(ColibriActivity.instance, NewEventActivity.class);
+				 Intent intent = new Intent().setClass(ColibriActivity.currentActivity, NewEventActivity.class);
 				 ColibriActivity.instance.startActivity(intent);
 			}
 			

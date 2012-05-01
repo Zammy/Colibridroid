@@ -16,7 +16,7 @@ public class IAmHereOverlay extends com.google.android.maps.Overlay {
 	private Bitmap youAreHereBitmap;
 	
 	public IAmHereOverlay() {
-		this.youAreHereBitmap = BitmapFactory.decodeResource(ColibriActivity.instance.getResources(), R.drawable.yrhere);  
+		this.youAreHereBitmap = BitmapFactory.decodeResource(ColibriActivity.currentActivity.getResources(), R.drawable.yrhere);  
 	}
 	
 	public void setGeoLocation(GeoPoint l) {

@@ -20,6 +20,7 @@ public class ColibriEvent {
 	public URL ThumbImageUrl;
 	public Calendar startTime;
 	public Calendar endTime;
+	public boolean isPrivate;
 	
 	public enum Type {
 		Drinking,
@@ -37,10 +38,9 @@ public class ColibriEvent {
 	}
 	
 	public String startTimeAsString() {
-		//[16:47:37] Mike Chernev: YYYY-MM-DD HH:MM:SS
 		return String.format("%04d-%02d-%02d %02d:%02d:00", 
 				this.startTime.get(Calendar.YEAR), 
-				this.startTime.get(Calendar.MONTH), 
+				this.startTime.get(Calendar.MONTH)+1, 
 				this.startTime.get(Calendar.DAY_OF_MONTH),
 				this.startTime.get(Calendar.HOUR_OF_DAY),
 				this.startTime.get(Calendar.MINUTE));
@@ -49,7 +49,7 @@ public class ColibriEvent {
 	public String endTimeAsString() {
 		return String.format("%04d-%02d-%02d %02d:%02d:00", 
 				this.endTime.get(Calendar.YEAR), 
-				this.endTime.get(Calendar.MONTH), 
+				this.endTime.get(Calendar.MONTH)+1, 
 				this.endTime.get(Calendar.DAY_OF_MONTH),
 				this.endTime.get(Calendar.HOUR_OF_DAY),
 				this.endTime.get(Calendar.MINUTE));

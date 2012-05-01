@@ -14,7 +14,8 @@ public class ViewEventActivity extends MapActivity {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
+		ColibriActivity.currentActivity = this;
+		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.vieweventactivity);
 		

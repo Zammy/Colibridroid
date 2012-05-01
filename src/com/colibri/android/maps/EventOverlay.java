@@ -43,7 +43,7 @@ public class EventOverlay extends com.google.android.maps.Overlay {
         for(EventOverlayItem e : events) {
         	if (e.hitTest(tapLocation)) {
         		
-        		Intent i = new Intent(ColibriActivity.instance,ViewEventActivity.class);
+        		Intent i = new Intent(ColibriActivity.currentActivity,ViewEventActivity.class);
         		i.putExtra("event", ColibriEvent.events.indexOf(e.event));
         		ColibriActivity.instance.startActivity(i);
         		

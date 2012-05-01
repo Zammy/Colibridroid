@@ -13,6 +13,8 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpParams;
 
 import com.colibri.android.data.ColibriEvent;
 
@@ -44,6 +46,8 @@ public class Server {
 		params.add(new BasicNameValuePair("lat", Double.toString(event.Latitude)));
 		params.add(new BasicNameValuePair("start_time", event.startTimeAsString()));
 		params.add(new BasicNameValuePair("end_time", event.endTimeAsString()));
+		if (event.isPrivate) 
+			params.add(new BasicNameValuePair("privacy", "SECRET"));
 		//String payload = jsonify(params);
 		send(createEventUrl,params, receiver);
 	}

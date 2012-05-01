@@ -15,6 +15,7 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -22,6 +23,7 @@ import android.widget.Spinner;
 import com.colibri.android.data.ColibriEvent;
 import com.colibri.android.maps.MapLocationDataHolder;
 import com.colibri.util.AlertDialogHelper;
+import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
@@ -36,6 +38,8 @@ public class NewEventActivity extends MapActivity {
 	private Calendar endTime;
 	
 	public void onCreate(Bundle savedInstanceState) {
+		ColibriActivity.currentActivity = this;
+		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.neweventactivity);
 		
@@ -62,24 +66,30 @@ public class NewEventActivity extends MapActivity {
 		this.startTime = new GregorianCalendar();
 		this.endTime =  new GregorianCalendar();
 		this.endTime.add(Calendar.HOUR_OF_DAY, 3);
-
-		int years = startTime.get(Calendar.YEAR);
-		int months = startTime.get(Calendar.MONTH);
-		int days = startTime.get(Calendar.DAY_OF_MONTH);
-		int hours =  startTime.get(Calendar.HOUR_OF_DAY);
-		int minutes = startTime.get(Calendar.MINUTE);
 		
 		Button button = (Button) this.findViewById(R.id.buttonStartTime);
-		button.setText(this.constructTimeString(years, months, days, hours, minutes));
-
-		years = endTime.get(Calendar.YEAR);
-		months = endTime.get(Calendar.MONTH);
-		days = endTime.get(Calendar.DAY_OF_MONTH);
-		hours =  endTime.get(Calendar.HOUR_OF_DAY);
-		minutes = endTime.get(Calendar.MINUTE);
+		this.setTimeOnButton(startTime,button);
 		
 		button = (Button) this.findViewById(R.id.buttonEndTime);
+		this.setTimeOnButton(endTime,button);
+		
+		GeoPoint p = MapLocationDataHolder.currentGeoLocation;
+		if ( p != null) {
+			this.longitude =  (double) (p.getLongitudeE6() / 1E6);
+			this.latitude =  (double) (p.getLatitudeE6() / 1E6);
+		}
+	}
+
+	private void setTimeOnButton(Calendar cal,Button button) {
+		
+		int years = cal.get(Calendar.YEAR);
+		int months = cal.get(Calendar.MONTH);
+		int days = cal.get(Calendar.DAY_OF_MONTH);
+		int hours =  cal.get(Calendar.HOUR_OF_DAY);
+		int minutes = cal.get(Calendar.MINUTE);
+
 		button.setText(this.constructTimeString(years, months, days, hours, minutes));
+		
 	}
 	
 	public void onButtonTimeClicked(View sender) {
@@ -90,13 +100,16 @@ public class NewEventActivity extends MapActivity {
 		ColibriEvent newEvent = new ColibriEvent();
 		
 		EditText textField = (EditText)this.findViewById(R.id.nameNewEvent);
-		newEvent.Name = textField.toString();
+		newEvent.Name = textField.getText().toString();
 		textField = (EditText)this.findViewById(R.id.descriptionNewEvent);
-		newEvent.Description = textField.toString();
+		newEvent.Description = textField.getText().toString();
 		newEvent.Longitude = this.longitude;
 		newEvent.Latitude = this.latitude;
 		newEvent.startTime = this.startTime;
 		newEvent.endTime = this.endTime;
+		
+		CheckBox checkBox = (CheckBox) this.findViewById(R.id.makePrivate);
+		newEvent.isPrivate = checkBox.isChecked();
 		
 		ColibriEvent.addNewEvent(newEvent);
 
@@ -150,14 +163,16 @@ public class NewEventActivity extends MapActivity {
 				Calendar cal = new GregorianCalendar(years,months,days,hours,minutes);
 				
 				if (buttonTag.equalsIgnoreCase("startTime")) {
-					if (cal.after(NewEventActivity.this.endTime)) {
-						AlertDialogHelper.ShowDialog(NewEventActivity.this, R.string.Error, "Begin time cannot be after end time.", R.string.OK	, new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int which) {}
-						});
-						return;
+					NewEventActivity.this.startTime = cal;
+					
+					if (NewEventActivity.this.startTime.after(NewEventActivity.this.endTime)) {
+						NewEventActivity.this.endTime = (Calendar) startTime.clone();
+						NewEventActivity.this.endTime.add(Calendar.HOUR, 3);
+						
+						Button button = (Button) NewEventActivity.this.findViewById(R.id.buttonEndTime);
+						NewEventActivity.this.setTimeOnButton(NewEventActivity.this.endTime,button);
 					}
 					
-					NewEventActivity.this.startTime = cal;
 				} else {
 					if (cal.before(NewEventActivity.this.startTime)) {
 						AlertDialogHelper.ShowDialog(NewEventActivity.this, R.string.Error, "End time cannot be befer begin time.", R.string.OK	, new DialogInterface.OnClickListener() {

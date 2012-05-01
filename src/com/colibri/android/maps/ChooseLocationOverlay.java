@@ -18,7 +18,7 @@ public class ChooseLocationOverlay extends com.google.android.maps.Overlay {
 	
 	public ChooseLocationOverlay(ChooseLocationActivity context) {
 		this.context = context;
-		this.eventLocationBitmap = BitmapFactory.decodeResource(ColibriActivity.instance.getResources(), R.drawable.yrhere);  
+		this.eventLocationBitmap = BitmapFactory.decodeResource(ColibriActivity.currentActivity.getResources(), R.drawable.yrhere);  
 	}
 	
 	public double getLatitude() {

@@ -40,7 +40,7 @@ public class EventAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 
 		if (convertView == null) {
-            LayoutInflater vi = (LayoutInflater)ColibriActivity.instance.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater vi = (LayoutInflater)ColibriActivity.currentActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = vi.inflate(R.layout.event_image_view, null);
 		}
 		

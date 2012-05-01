@@ -29,6 +29,8 @@ public class MapTab extends MapActivity {
 	private EventOverlay eventOverlay;
 	
     public void onCreate(Bundle savedInstanceState) {
+    	ColibriActivity.currentActivity = this;
+    	
         super.onCreate(savedInstanceState);
         setContentView(R.layout.maptab);
         
