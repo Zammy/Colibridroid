@@ -1,9 +1,14 @@
 package com.colibri.android.maps;
 
+import java.io.IOException;
+import java.util.Locale;
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Point;
+import android.location.Address;
+import android.location.Geocoder;
 
 import com.colibri.android.ChooseLocationActivity;
 import com.colibri.android.ColibriActivity;
@@ -15,6 +20,7 @@ public class ChooseLocationOverlay extends com.google.android.maps.Overlay {
 	private GeoPoint location;
 	private Bitmap eventLocationBitmap;
 	private ChooseLocationActivity context;
+
 	
 	public ChooseLocationOverlay(ChooseLocationActivity context) {
 		this.context = context;
@@ -34,32 +40,16 @@ public class ChooseLocationOverlay extends com.google.android.maps.Overlay {
 		this.location = p;
 		mapView.getController().animateTo(p);
 		
-		context.LocationSelected();
-
-//		Geocoder gcd = new Geocoder(this.context, Locale.getDefault());
-//		try {
-//			List<Address> addresses = gcd.getFromLocation(latitude, longitude, 5);
-//			CharSequence[] addresses_charSequence = new CharSequence[addresses.size()];
-//			for(int i=0; i < addresses.size(); i++) {
-//				addresses_charSequence[i] = (CharSequence) addresses.get(i).toString();
-//			}
-//			
-//			AlertDialog.Builder builder = new AlertDialog.Builder(this.context);
-//			builder.setTitle(R.string.ChooseAddress);
-//			builder.setItems(addresses_charSequence, new DialogInterface.OnClickListener() {
-//				
-//			    public void onClick(DialogInterface dialog, int item) {
-//			       // Toast.makeText(getApplicationContext(), items[item], Toast.LENGTH_SHORT).show();
-//			    }
-//			    
-//			});
-//			
-//			AlertDialog alert = builder.create();
-//			alert.show();
-//			
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
+		
+		Address address = null;
+		Geocoder gcd = new Geocoder(this.context, Locale.getDefault());
+		try {
+			address = gcd.getFromLocation(getLatitude(), getLongitude(), 1).get(0);
+		} catch (IOException e) {
+			e.printStackTrace();
+			
+		}
+		context.LocationSelected(address);
 		return true;
 	}
 	

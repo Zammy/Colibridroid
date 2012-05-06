@@ -30,7 +30,7 @@ public class WhatsCookingTab extends Activity {
 				
         		Intent i = new Intent(ColibriActivity.currentActivity,ViewEventActivity.class);
         		i.putExtra("event", position);
-        		ColibriActivity.instance.startActivity(i);
+        		ColibriActivity.currentActivity.startActivity(i);
 			}
 		});
 		

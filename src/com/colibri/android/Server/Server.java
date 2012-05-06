@@ -39,7 +39,7 @@ public class Server {
 		params.add(new BasicNameValuePair("access_token", access_token));
 		params.add(new BasicNameValuePair("name", event.name));
 		params.add(new BasicNameValuePair("description", event.description));
-		params.add(new BasicNameValuePair("location","Not implemented."));
+		params.add(new BasicNameValuePair("location",event.address));
 		params.add(new BasicNameValuePair("lon", Double.toString(event.longitude)));
 		params.add(new BasicNameValuePair("lat", Double.toString(event.latitude)));
 		params.add(new BasicNameValuePair("start_time", event.startTimeAsString()));

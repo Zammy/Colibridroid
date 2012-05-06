@@ -3,6 +3,7 @@ package com.colibri.android;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.location.Address;
 import android.os.Bundle;
 
 import com.colibri.android.maps.ChooseLocationOverlay;
@@ -18,6 +19,8 @@ public class ChooseLocationActivity extends MapActivity {
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		ColibriActivity.currentActivity = this;
+		
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chooselocationactivity);
         
@@ -41,10 +44,13 @@ public class ChooseLocationActivity extends MapActivity {
 	    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 	}
 	
-	public void LocationSelected() {
+	public void LocationSelected(Address address) {
 		Intent intent = this.getIntent();
 		intent.putExtra("longitude", this.overlay.getLongitude());
 		intent.putExtra("latitude", this.overlay.getLatitude());
+		if (address != null) {
+			intent.putExtra("address", address);
+		}
 		this.setResult(RESULT_OK, intent);
 		this.finish();
 	}

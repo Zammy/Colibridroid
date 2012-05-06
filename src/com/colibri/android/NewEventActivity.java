@@ -9,7 +9,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.location.Address;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -36,6 +38,8 @@ public class NewEventActivity extends MapActivity {
 	
 	private Calendar startTime;
 	private Calendar endTime;
+	
+	private String address;
 	
 	public void onCreate(Bundle savedInstanceState) {
 		ColibriActivity.currentActivity = this;
@@ -117,6 +121,7 @@ public class NewEventActivity extends MapActivity {
 		newEvent.description = textField.getText().toString();
 		newEvent.longitude = this.longitude;
 		newEvent.latitude = this.latitude;
+		newEvent.address = this.address;
 		newEvent.startTime = this.startTime;
 		newEvent.endTime = this.endTime;
 		
@@ -141,11 +146,30 @@ public class NewEventActivity extends MapActivity {
 	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		ColibriActivity.currentActivity = this;
 		super.onActivityResult(requestCode, resultCode, data);
 		
 		//here we get longitude and latitude data
 		this.latitude = data.getExtras().getDouble("latitude"); 
 		this.longitude = data.getExtras().getDouble("longitude");
+		Parcelable p = data.getExtras().getParcelable("address");
+		if (p != null) {
+			Address a = (Address) p;
+			int i = 0;
+			this.address = "";
+			while(true) {
+				String addressLine = a.getAddressLine(i);
+				if (addressLine == null)
+					break;
+				this.address += addressLine;
+				i++;
+				if (i > 0 ) {
+					this.address += ", ";
+				}
+			}
+			EditText editText = (EditText)this.findViewById(R.id.addressNewEvent);
+			editText.setText(this.address);
+		}
 	}
 	
 	private String constructTimeString(int years, int months, int days, int hours, int minutes) {

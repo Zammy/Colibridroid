@@ -14,6 +14,7 @@ public class ColibriEvent {
 	public double latitude;
 	public String name;
 	public String description;
+	public String address;
 	public ColibriEvent.Type type;
 	public URL imageUrl;
 	public URL thumbImageUrl;
