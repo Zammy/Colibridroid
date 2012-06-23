@@ -43,7 +43,7 @@
             android:name=".FacebookLoginActivity" />
         
         <activity 
-            android:label="@string/NewEventActivityLabel"
+            android:label="@string/Event"
             android:name=".NewEventActivity"
             android:configChanges="keyboardHidden|orientation" />
          

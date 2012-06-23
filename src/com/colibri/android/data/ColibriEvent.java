@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import com.colibri.android.ColibriActivity;
+import com.colibri.android.Server.EditEventReceiver;
 import com.colibri.android.Server.NewEventReceiver;
 import com.colibri.android.Server.Server;
 
@@ -32,10 +33,17 @@ public class ColibriEvent {
 	
 	public static ArrayList<ColibriEvent> events;
 	
+	static {
+		ColibriEvent.events = new ArrayList<ColibriEvent>();
+	}
 	public static void addNewEvent(ColibriEvent event) {
 		events.add(event);
 		
-		Server.newEvent(ColibriActivity.instance.accessToken, event, new NewEventReceiver(event));
+		Server.newEvent(ColibriActivity.accessToken, event, new NewEventReceiver(event));
+	}
+	
+	public static void editEvent(ColibriEvent event) {
+		Server.newEvent(ColibriActivity.accessToken, event, new EditEventReceiver());
 	}
 	
 	public String startTimeAsString() {
@@ -56,7 +64,5 @@ public class ColibriEvent {
 				this.endTime.get(Calendar.MINUTE));
 	}
 	
-	static {
-		ColibriEvent.events = new ArrayList<ColibriEvent>();
-	}
+
 }

@@ -11,18 +11,21 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 
+import com.colibri.android.Server.EventsReceiver;
 import com.colibri.android.data.ColibriEvent;
 import com.colibri.android.maps.EventOverlay;
 import com.colibri.android.maps.EventOverlayItem;
 import com.colibri.android.maps.IAmHereOverlay;
 import com.colibri.android.maps.MapLocationDataHolder;
+import com.colibri.util.IChangeListener;
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 
-public class MapTab extends MapActivity {
+public class MapTab extends MapActivity
+					implements IChangeListener {
 	private MapTab.GeoLocListener locationListener;
 	private MapView mapView;
 	private IAmHereOverlay targetOverlay;
@@ -30,6 +33,7 @@ public class MapTab extends MapActivity {
 	
     public void onCreate(Bundle savedInstanceState) {
     	ColibriActivity.currentActivity = this;
+    	EventsReceiver.listener = this;
     	
         super.onCreate(savedInstanceState);
         setContentView(R.layout.maptab);
@@ -42,8 +46,6 @@ public class MapTab extends MapActivity {
         listOfOverlays.add(targetOverlay);
         listOfOverlays.add(eventOverlay);
 
-        this.populateEvents();
-
         this.locationListener = new GeoLocListener();
         this.locationListener.start();
 		LocationManager locationManager = (LocationManager)this.getSystemService(Context.LOCATION_SERVICE);
@@ -51,20 +53,29 @@ public class MapTab extends MapActivity {
 		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this.locationListener);
 		
 		MenuButtonHandler.getInstance().addHandlers(this.findViewById(R.id.buttons));
-		
-
     }
     
-    private void populateEvents() {
+    @Override
+    protected void onResume() {
+        this.populateEvents();
+    	super.onResume();
+    }
 
+	public void hasChanged() {
+		this.populateEvents();
+	}
+    
+    public void populateEvents() {
+    	this.eventOverlay.clear();
 		ArrayList<ColibriEvent> events = ColibriEvent.events;
-		for(ColibriEvent event : events) {
-			EventOverlayItem item = new EventOverlayItem(event);
-			this.eventOverlay.addEvent(item);
-		}
+	    synchronized(events) { 
+			for(ColibriEvent event : events) {
+				EventOverlayItem item = new EventOverlayItem(event);
+				this.eventOverlay.addEvent(item);
+			}
+	    }
 	}
 
- 
 	public void setLocation(Location l) {
 		
 		MapLocationDataHolder.currentLocation = l;

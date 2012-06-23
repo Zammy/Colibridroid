@@ -18,7 +18,6 @@ import com.colibri.android.data.ColibriEvent;
 public class EventAdapter extends BaseAdapter {
 	
 	private final ArrayList<ColibriEvent> events;
-	private final DrawableManager drawableManager = new DrawableManager();
 
 	public EventAdapter(ArrayList<ColibriEvent> events) {
 		this.events = events;	
@@ -54,7 +53,7 @@ public class EventAdapter extends BaseAdapter {
 
 	private void hookEventInformation(View eventImageView,ColibriEvent event) {
 		ImageView thumbImage = (ImageView) eventImageView.findViewById(R.id.eventImageThumb);
-		this.drawableManager.fetchDrawableOnThread(event.thumbImageUrl.toString(), thumbImage);
+		DrawableManager.getInstance().fetchDrawableOnThread(event.thumbImageUrl.toString(), thumbImage);
 		
 		TextView description = (TextView)eventImageView.findViewById(R.id.eventDescription);
 		description.setText(event.description);

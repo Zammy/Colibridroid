@@ -25,7 +25,7 @@ public class ColibriActivity extends TabActivity {
 	public static ColibriActivity instance;
 	
    Facebook facebook = new Facebook("306736219374446");
-   public String accessToken;
+   public static String accessToken;
    
    private SharedPreferences mPrefs;
 	
@@ -74,7 +74,7 @@ public class ColibriActivity extends TabActivity {
 
 	private void FacebookLogin() {
 		mPrefs = getPreferences(MODE_PRIVATE);
-        this.accessToken = mPrefs.getString("access_token", null);
+        accessToken = mPrefs.getString("access_token", null);
         long expires = mPrefs.getLong("access_expires", 0);
         if (accessToken != null) {
             facebook.setAccessToken(accessToken);
@@ -84,6 +84,7 @@ public class ColibriActivity extends TabActivity {
         }
         
         if(facebook.isSessionValid()) {
+        	   
             Server.getEvents(accessToken, new EventsReceiver());
         	return;
         }
@@ -93,12 +94,12 @@ public class ColibriActivity extends TabActivity {
 	        public void onComplete(Bundle values) {
 	            SharedPreferences.Editor editor = mPrefs.edit();
 
-	            String access_token = facebook.getAccessToken();
-	            editor.putString("access_token", access_token);
+	            String accessToken = facebook.getAccessToken();
+	            editor.putString("access_token", accessToken);
 	            editor.putLong("access_expires", facebook.getAccessExpires());
 	            editor.commit();
 	            
-	            Server.getEvents(access_token, new EventsReceiver());
+	            Server.getEvents(accessToken, new EventsReceiver());
 	        }
 	
 	

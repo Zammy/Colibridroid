@@ -1,6 +1,7 @@
 package com.colibri.android;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -21,8 +22,10 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.colibri.android.data.ColibriEvent;
+import com.colibri.android.data.ColibriEvent.Type;
 import com.colibri.android.maps.MapLocationDataHolder;
 import com.colibri.util.AlertDialogHelper;
 import com.google.android.maps.GeoPoint;
@@ -39,15 +42,15 @@ public class NewEventActivity extends MapActivity {
 	private Calendar startTime;
 	private Calendar endTime;
 	
-	private String address;
+	//private String address;
+	
+	private int indexOfEvent;
 	
 	public void onCreate(Bundle savedInstanceState) {
 		ColibriActivity.currentActivity = this;
 		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.neweventactivity);
-		
-		this.findViewById(R.id.buttonStartTime);
 		
 		ColibriEvent.Type[] types = ColibriEvent.Type.values();
 		ArrayList<String> categories = new ArrayList<String>();
@@ -60,16 +63,75 @@ public class NewEventActivity extends MapActivity {
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner.setAdapter(adapter);
 		
+		Intent i = this.getIntent();
+		indexOfEvent = i.getIntExtra("event", -1);
+
+		this.initFields();
+		this.initMap();
+		this.initTime();
+		
+		if (indexOfEvent != -1) {
+			ColibriEvent event = ColibriEvent.events.get(indexOfEvent);
+			
+			int index = Arrays.asList(types).indexOf(event.type);
+			spinner.setSelection(index);
+
+			CheckBox checkBox = (CheckBox) this.findViewById(R.id.makePrivate);
+			checkBox.setChecked( event.isPrivate );
+			
+			Button createEventButton = (Button) this.findViewById(R.id.createEventButton);
+			createEventButton.setText(R.string.EditEvent);
+		}
+	}
+
+	private void initFields() {
+		if (indexOfEvent != -1) {
+			ColibriEvent event = ColibriEvent.events.get(indexOfEvent);
+			TextView name = (TextView) this.findViewById(R.id.nameNewEvent);
+			name.setText(event.name);
+			TextView description = (TextView) this.findViewById(R.id.descriptionNewEvent);
+			description.setText(event.description);
+			TextView address = (TextView) this.findViewById(R.id.addressNewEvent);
+			address.setText(event.address);
+		}
+	}
+
+	private void initMap() {
 		MapView miniMap = (MapView) this.findViewById(R.id.minimap);
 		MapController controller = miniMap.getController();
-		if (MapLocationDataHolder.currentGeoLocation != null) {
+		if (MapLocationDataHolder.currentGeoLocation != null && indexOfEvent == -1) {
 			controller.setCenter(MapLocationDataHolder.currentGeoLocation);
 			controller.setZoom(17);
+			
+			GeoPoint p = MapLocationDataHolder.currentGeoLocation;
+			if ( p != null) {
+				this.longitude =  (double) (p.getLongitudeE6() / 1E6);
+				this.latitude =  (double) (p.getLatitudeE6() / 1E6);
+			}
+			
+		} else if (indexOfEvent != -1) {
+			ColibriEvent event = ColibriEvent.events.get(indexOfEvent);
+			this.longitude = event.longitude;
+			this.latitude = event.latitude;
+			
+			controller.setCenter(new GeoPoint(
+		            (int) (this.latitude * 1E6), 
+		            (int) (this.longitude * 1E6)));
+			controller.setZoom(17);
 		}
-		
-		this.startTime = new GregorianCalendar();
-		this.endTime =  new GregorianCalendar();
-		this.endTime.add(Calendar.HOUR_OF_DAY, 3);
+	}
+	
+
+	private void initTime() {
+		if (indexOfEvent == -1) {
+			this.startTime = new GregorianCalendar();
+			this.endTime =  new GregorianCalendar();
+			this.endTime.add(Calendar.HOUR_OF_DAY, 3);
+		} else {
+			ColibriEvent event = ColibriEvent.events.get(indexOfEvent);
+			this.startTime = event.startTime;
+			this.endTime = event.endTime;
+		}
 		
 		Button button = (Button) this.findViewById(R.id.buttonStartTime);
 		this.setTimeOnButton(startTime,button);
@@ -77,11 +139,6 @@ public class NewEventActivity extends MapActivity {
 		button = (Button) this.findViewById(R.id.buttonEndTime);
 		this.setTimeOnButton(endTime,button);
 		
-		GeoPoint p = MapLocationDataHolder.currentGeoLocation;
-		if ( p != null) {
-			this.longitude =  (double) (p.getLongitudeE6() / 1E6);
-			this.latitude =  (double) (p.getLatitudeE6() / 1E6);
-		}
 	}
 
 	private void setTimeOnButton(Calendar cal,Button button) {
@@ -113,23 +170,35 @@ public class NewEventActivity extends MapActivity {
 	}
 	
 	public void onButtonCreateEventClicked(View sender) {
-		ColibriEvent newEvent = new ColibriEvent();
+		ColibriEvent event;
+		if (this.indexOfEvent == -1) {
+			event = new ColibriEvent();
+		} else {
+			event = ColibriEvent.events.get(indexOfEvent);
+		}
 		
 		EditText textField = (EditText)this.findViewById(R.id.nameNewEvent);
-		newEvent.name = textField.getText().toString();
+		event.name = textField.getText().toString();
 		textField = (EditText)this.findViewById(R.id.descriptionNewEvent);
-		newEvent.description = textField.getText().toString();
-		newEvent.longitude = this.longitude;
-		newEvent.latitude = this.latitude;
-		newEvent.address = this.address;
-		newEvent.startTime = this.startTime;
-		newEvent.endTime = this.endTime;
+		event.description = textField.getText().toString();
+		event.longitude = this.longitude;
+		event.latitude = this.latitude;
+		textField = (EditText)this.findViewById(R.id.addressNewEvent);
+		event.address = textField.getText().toString();
+		event.startTime = this.startTime;
+		event.endTime = this.endTime;
+		event.isOwnedByMe = true;
+		Spinner spinner = (Spinner) this.findViewById(R.id.categorySpinner);
+		event.type = ColibriEvent.Type.valueOf( (String) spinner.getSelectedItem() );
 		
 		CheckBox checkBox = (CheckBox) this.findViewById(R.id.makePrivate);
-		newEvent.isPrivate = checkBox.isChecked();
+		event.isPrivate = checkBox.isChecked();
 		
-		ColibriEvent.addNewEvent(newEvent);
-
+		if (this.indexOfEvent == -1) {
+			ColibriEvent.addNewEvent(event);
+		} else {
+			ColibriEvent.editEvent(event);
+		}
 	}
 	
 	public void onButtonSelectLocationClicked(View sender) {
@@ -156,19 +225,19 @@ public class NewEventActivity extends MapActivity {
 		if (p != null) {
 			Address a = (Address) p;
 			int i = 0;
-			this.address = "";
+			String address = "";
 			while(true) {
 				String addressLine = a.getAddressLine(i);
 				if (addressLine == null)
 					break;
-				this.address += addressLine;
+				address += addressLine;
 				i++;
 				if (i > 0 ) {
-					this.address += ", ";
+					address += ", ";
 				}
 			}
 			EditText editText = (EditText)this.findViewById(R.id.addressNewEvent);
-			editText.setText(this.address);
+			editText.setText(address);
 		}
 	}
 	

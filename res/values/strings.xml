@@ -6,7 +6,7 @@
 	<string name="NewEvent">NewEvent</string>
 	<string name="SetParameter">SetParameter</string>
 	<string name="Refresh">Refresh</string>
-	<string name="NewEventActivityLabel">New Event</string>
+	<string name="Event">Event</string>
 	
 	<!-- New Event  -->
 	<string name="hint_NameOfEvent">Event Name</string>
@@ -26,4 +26,7 @@
 	<string name="OK">OK</string>
 	<string name="Success">Success</string>
 	<string name="SuccessfulEventCreat">Event was created successfully.</string>
+	<string name="SuccessfulEventEdit">Event was edited successfully.</string>
+	
+	<string name="EditEvent">Edit Event</string>
 </resources>

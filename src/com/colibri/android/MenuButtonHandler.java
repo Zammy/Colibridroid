@@ -1,8 +1,12 @@
 package com.colibri.android;
 
+import com.colibri.android.Server.EventsReceiver;
+import com.colibri.android.Server.Server;
+
 import android.content.Intent;
 import android.view.View;
 import android.view.View.OnClickListener;
+
 import android.widget.Button;
 
 public class MenuButtonHandler {
@@ -24,6 +28,14 @@ public class MenuButtonHandler {
 				 ColibriActivity.currentActivity.startActivity(intent);
 			}
 			
+		});
+		
+		Button refresh = (Button) view.findViewById(R.id.refreshEvents);
+		refresh.setOnClickListener(new OnClickListener() {
+			
+			public void onClick(View v) {
+	            Server.getEvents(ColibriActivity.accessToken, new EventsReceiver());
+			}
 		});
 	}
 }

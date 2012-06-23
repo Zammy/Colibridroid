@@ -26,11 +26,13 @@ public class EventOverlay extends com.google.android.maps.Overlay {
     public boolean draw(Canvas canvas, MapView mapView, boolean shadow, long when) {
         super.draw(canvas, mapView, shadow);    
         
-        if (this.events.size() == 0)
-        	return false;
-        
-        for(EventOverlayItem e : events) {
-        	e.draw(canvas, mapView.getProjection());
+        synchronized(events) { 
+	        if (this.events.size() == 0)
+	        	return false;
+	        
+	        for (EventOverlayItem e : events) {
+	        	e.draw(canvas, mapView.getProjection());
+	        }
         }
         
         return false;
@@ -51,4 +53,10 @@ public class EventOverlay extends com.google.android.maps.Overlay {
         }
     	return super.onTap(p, mapView);
     }
+
+	public void clear() {
+		synchronized(events) {
+			this.events.clear();
+		}
+	}
 }

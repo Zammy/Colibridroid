@@ -19,8 +19,11 @@ import com.colibri.android.ColibriActivity;
 import com.colibri.android.R;
 import com.colibri.android.data.ColibriEvent;
 import com.colibri.util.AlertDialogHelper;
+import com.colibri.util.IChangeListener;
 
 public class EventsReceiver implements ISendReceiver {
+	
+	public static IChangeListener listener;
 
 	public void error(String error) {
 		
@@ -33,13 +36,16 @@ public class EventsReceiver implements ISendReceiver {
 	public void parse(String result) {
 		try {
 			JSONArray jsonEventsArray = new JSONArray(result);
+			ColibriEvent.events.clear();
 			for (int i = 0; i < jsonEventsArray.length(); i++) {
 				JSONObject jsonEvent = jsonEventsArray.getJSONObject(i);
 				ColibriEvent event = new ColibriEvent();
+				event.name = jsonEvent.getString("name");
 				event.description = jsonEvent.getString("description");
 				event.longitude = Double.parseDouble(jsonEvent.getString("lon"));
 				event.latitude = Double.parseDouble(jsonEvent.getString("lat"));
 				event.fbPointer = jsonEvent.getString("fb_event_id");
+				event.type = ColibriEvent.Type.valueOf(jsonEvent.getString("category"));
 
 				String startTime = jsonEvent.getString("start_time");
 				String endTime = jsonEvent.getString("end_time");
@@ -70,6 +76,8 @@ public class EventsReceiver implements ISendReceiver {
 				ColibriEvent.events.add(event);
 			}
 			
+			if (listener != null)
+				listener.hasChanged();
 			
 		} catch (JSONException e) {
 			e.printStackTrace();

@@ -34,7 +34,7 @@ public class Server {
 	    send(getEventsUrl,params, receiver);
 	}
 	
-	public static void newEvent(String access_token,ColibriEvent event, NewEventReceiver receiver) {
+	public static void newEvent(String access_token,ColibriEvent event, ISendReceiver receiver) {
 		ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("access_token", access_token));
 		params.add(new BasicNameValuePair("name", event.name));
@@ -44,9 +44,11 @@ public class Server {
 		params.add(new BasicNameValuePair("lat", Double.toString(event.latitude)));
 		params.add(new BasicNameValuePair("start_time", event.startTimeAsString()));
 		params.add(new BasicNameValuePair("end_time", event.endTimeAsString()));
+		params.add(new BasicNameValuePair("category", event.type.toString()));
+		if (event.fbPointer != null)
+			params.add(new BasicNameValuePair("fb_event_id", event.fbPointer));
 		if (event.isPrivate) 
 			params.add(new BasicNameValuePair("privacy", "SECRET"));
-		//String payload = jsonify(params);
 		send(createEventUrl,params, receiver);
 	}
 	
