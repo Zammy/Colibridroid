@@ -27,6 +27,9 @@
 	<string name="Success">Success</string>
 	<string name="SuccessfulEventCreat">Event was created successfully.</string>
 	<string name="SuccessfulEventEdit">Event was edited successfully.</string>
+	<string name="SuccessfulEventDelete">Event was deleted successfully.</string>
 	
 	<string name="EditEvent">Edit Event</string>
+	<string name="DeleteEvent">Delete Event</string>
+	
 </resources>

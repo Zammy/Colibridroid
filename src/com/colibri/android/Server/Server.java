@@ -20,6 +20,7 @@ public class Server {
 	
 	private static final String getEventsUrl = "http://www.nastop.com/colibri/getEvents.php";
 	private static final String createEventUrl = "http://www.nastop.com/colibri/createEvent.php";
+	private static final String deleteEventUrl = "http://www.nastop.com/colibri/deleteEvent.php";
 	
 //	private static String android_id;
 	
@@ -52,11 +53,13 @@ public class Server {
 		send(createEventUrl,params, receiver);
 	}
 	
-//	private static String jsonify(HashMap<String,String> params) {
-//		JSONObject o = new JSONObject(params);
-//		return o.toString();
-//	}
-
+	public static void deleteEvent(String access_token,String facebookID, ISendReceiver receiver) {
+		ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("access_token", access_token));
+		params.add(new BasicNameValuePair("fb_event_id", facebookID));
+		send(deleteEventUrl,params, receiver);
+	}
+	
 	private static void send(final String url, final ArrayList<NameValuePair> nameValuePairs,final ISendReceiver sendReceiver) {
 		Thread t = new Thread(new Runnable() {
 			public void run() {

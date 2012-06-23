@@ -40,6 +40,15 @@ public class WhatsCookingTab extends Activity
 		
 		MenuButtonHandler.getInstance().addHandlers(this.findViewById(R.id.buttons));
 	}
+  
+    @Override
+    protected void onResume() {
+    	super.onResume();
+    	
+		GridView gridView = (GridView) this.findViewById(R.id.gridView);
+		adapter.notifyDataSetChanged();
+		gridView.invalidateViews();
+    }
 
 	public void hasChanged() {
 		GridView gridView = (GridView) this.findViewById(R.id.gridView);
