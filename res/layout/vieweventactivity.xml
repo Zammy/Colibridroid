@@ -4,11 +4,33 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
+<!--   <RelativeLayout -->
+<!--       	android:layout_width="match_parent" -->
+<!-- 		android:layout_height="100dp" > -->
+
+<!--     <ImageView  -->
+<!--         android:id="@+id/viewEventImage" -->
+<!--         android:src="@drawable/noimagefound"  -->
+<!--         android:layout_width="match_parent" -->
+<!--         android:layout_height="100dp"/> -->
+    
+    
+   	
+<!-- 	   <Button -->
+<!-- 	       	android:layout_width="match_parent" -->
+<!-- 			android:layout_height="match_parent" -->
+<!-- 	       	android:layout_centerInParent="true" -->
+<!-- 	       	android:background="@null" -->
+<!-- 	       	android:onClick="onButtonSelectLocationClicked" /> -->
+    
+<!--     </RelativeLayout> -->
+
     <ImageView 
         android:id="@+id/viewEventImage"
         android:src="@drawable/noimagefound" 
         android:layout_width="match_parent"
-        android:layout_height="100dp"/>
+        android:layout_height="100dp"
+        android:onClick="imageClicked" />
 
     <TextView
         android:id="@+id/nameEvent"

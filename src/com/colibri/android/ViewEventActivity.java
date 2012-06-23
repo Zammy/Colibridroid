@@ -1,9 +1,17 @@
 package com.colibri.android;
 
+import java.io.ByteArrayOutputStream;
+
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -12,6 +20,7 @@ import android.widget.TextView;
 
 import com.colibri.android.Server.DeleteEventReceiver;
 import com.colibri.android.Server.DrawableManager;
+import com.colibri.android.Server.ImageSendReceiver;
 import com.colibri.android.Server.Server;
 import com.colibri.android.data.ColibriEvent;
 import com.colibri.android.maps.MapLocationDataHolder;
@@ -21,6 +30,8 @@ import com.google.android.maps.MapView;
 
 public class ViewEventActivity extends MapActivity {
 	
+	private static final int SELECT_PICTURE = 11;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		ColibriActivity.currentActivity = this;
@@ -55,9 +66,9 @@ public class ViewEventActivity extends MapActivity {
 		}
 		
 		textView = (TextView) this.findViewById(R.id.startTimeDate);
-		textView.setText("21.04.2012 @ 14:00");
+		textView.setText(event.startTimeAsString());
 		textView = (TextView) this.findViewById(R.id.endTimeDate);
-		textView.setText("21.04.2012 @ 15:00");
+		textView.setText(event.endTimeAsString());
 		
 		Button editEventButton = (Button)this.findViewById(R.id.editEventButton);
 		Button deleteEventButton = (Button)this.findViewById(R.id.deleteEventButton);
@@ -102,6 +113,57 @@ public class ViewEventActivity extends MapActivity {
 			deleteEventButton.setVisibility(View.GONE);
 			editEventButton.setVisibility(View.GONE);
 		}
+	}
+	
+	public void imageClicked(final View view) {
+		
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent,
+                "Select Picture"), SELECT_PICTURE);
+	}
+	
+	protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) { 
+	    super.onActivityResult(requestCode, resultCode, imageReturnedIntent); 
+
+        if (resultCode == RESULT_OK && requestCode == SELECT_PICTURE) { 
+
+    		final ProgressDialog dialog = ProgressDialog.show(this, "", 
+                    "Please wait while image is uploaded...", true);
+
+            Uri selectedImageUri = imageReturnedIntent.getData();
+            String filePath = this.getPath(selectedImageUri);
+
+    		Intent i = this.getIntent();	
+    		final int indexOfEvent = i.getIntExtra("event", -1);
+    		final ColibriEvent event = ColibriEvent.events.get(indexOfEvent);
+    		
+    		Bitmap bitmapOrg = BitmapFactory.decodeFile(filePath);
+            ByteArrayOutputStream bao = new ByteArrayOutputStream();
+            String filenameArray[] = filePath.split("\\.");
+            String extension = filenameArray[filenameArray.length-1];
+            if (extension.equalsIgnoreCase("png")) {
+            	bitmapOrg.compress(Bitmap.CompressFormat.PNG, 90, bao);
+            } else if (extension.equalsIgnoreCase("jpg")) {
+            	bitmapOrg.compress(Bitmap.CompressFormat.JPEG, 90, bao);
+            }
+            byte [] ba = bao.toByteArray();
+            String ba1 = com.colibri.util.Base64.encodeBytes(ba);
+
+            Server.uploadImage(ColibriActivity.accessToken, event.fbPointer, ba1, extension , new ImageSendReceiver(this,event,dialog));
+
+        }
+	    
+	}
+	
+	private String getPath(Uri uri) {
+	    String[] projection = { MediaStore.Images.Media.DATA };
+	    Cursor cursor = managedQuery(uri, projection, null, null, null);
+	    int column_index = cursor
+	            .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+	    cursor.moveToFirst();
+	    return cursor.getString(column_index);
 	}
 	
 	@Override

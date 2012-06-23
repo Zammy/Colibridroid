@@ -21,6 +21,7 @@ public class Server {
 	private static final String getEventsUrl = "http://www.nastop.com/colibri/getEvents.php";
 	private static final String createEventUrl = "http://www.nastop.com/colibri/createEvent.php";
 	private static final String deleteEventUrl = "http://www.nastop.com/colibri/deleteEvent.php";
+	private static final String uploadImageUrl = "http://www.nastop.com/colibri/uploadImage.php";
 	
 //	private static String android_id;
 	
@@ -53,11 +54,20 @@ public class Server {
 		send(createEventUrl,params, receiver);
 	}
 	
-	public static void deleteEvent(String access_token,String facebookID, ISendReceiver receiver) {
+	public static void deleteEvent(String access_token,String facebook_id, ISendReceiver receiver) {
 		ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("access_token", access_token));
-		params.add(new BasicNameValuePair("fb_event_id", facebookID));
+		params.add(new BasicNameValuePair("fb_event_id", facebook_id));
 		send(deleteEventUrl,params, receiver);
+	}
+	
+	public static void uploadImage(String access_token,String facebook_id,String image, String extension, ISendReceiver receiver) {
+		ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("access_token", access_token));
+		params.add(new BasicNameValuePair("fb_event_id", facebook_id));
+		params.add(new BasicNameValuePair("image_ext", extension));
+		params.add(new BasicNameValuePair("image", image));
+		send(uploadImageUrl,params, receiver);
 	}
 	
 	private static void send(final String url, final ArrayList<NameValuePair> nameValuePairs,final ISendReceiver sendReceiver) {

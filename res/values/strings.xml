@@ -32,4 +32,7 @@
 	<string name="EditEvent">Edit Event</string>
 	<string name="DeleteEvent">Delete Event</string>
 	
+	<string name="pickFromCamera">Upload image from camera</string>
+	<string name="pickFromGalery">Upload image from gallery</string>
+	
 </resources>
