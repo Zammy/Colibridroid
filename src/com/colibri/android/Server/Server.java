@@ -60,8 +60,9 @@ public class Server {
 			public void run() {
 				HttpClient client = new DefaultHttpClient();
 				HttpPost post = new HttpPost(url);
+				post.addHeader("charset", "utf8");
 				try {
-					post.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+					post.setEntity(new UrlEncodedFormEntity(nameValuePairs,"UTF-8"));
 					HttpResponse response = client.execute(post);
 					BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent(),Charset.forName("UTF-8")));
 					String received = rd.readLine();
