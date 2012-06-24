@@ -24,6 +24,7 @@ import com.colibri.android.Server.ImageSendReceiver;
 import com.colibri.android.Server.Server;
 import com.colibri.android.data.ColibriEvent;
 import com.colibri.android.maps.MapLocationDataHolder;
+import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
@@ -60,10 +61,12 @@ public class ViewEventActivity extends MapActivity {
 		
 		MapView miniMap = (MapView) this.findViewById(R.id.eventLocationMap);
 		MapController controller = miniMap.getController();
-		if (MapLocationDataHolder.currentGeoLocation != null) {
-			controller.setCenter(MapLocationDataHolder.currentGeoLocation);
-			controller.setZoom(17);
-		}
+
+		controller.setCenter(new GeoPoint(
+	            (int) (event.latitude * 1E6), 
+	            (int) (event.longitude * 1E6)));
+		controller.setZoom(17);
+		
 		
 		textView = (TextView) this.findViewById(R.id.startTimeDate);
 		textView.setText(event.startTimeAsString());
